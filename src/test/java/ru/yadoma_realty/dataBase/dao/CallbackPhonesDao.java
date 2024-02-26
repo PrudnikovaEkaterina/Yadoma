@@ -1,22 +1,28 @@
 package ru.yadoma_realty.dataBase.dao;
 
-
 import lombok.Cleanup;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import ru.yadoma_realty.configuration.HibernateConfig;
+import ru.yadoma_realty.dataBase.entities.CallbackPhonesEntity;
+
 
 public class CallbackPhonesDao {
-    @Cleanup
-    SessionFactory sessionFactory = HibernateConfig.buildSessionFactory();
 
-    Session session = sessionFactory.openSession();
+    public static void getLastEntryFromCallbackPhonesTables() {
+        @Cleanup
+        var sessionFactory = HibernateConfig.buildSessionFactory();
+        @Cleanup
+        var session = sessionFactory.openSession();
 
-//        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-//             Session session = sessionFactory.openSession()) {}
+        session.getTransaction().begin();
 
-    Transaction transaction = session.beginTransaction();
-//        session.createNativeQuery("SET TRANSACTION READ ONLY", City.class).executeUpdate();
+        session.createNativeQuery("SET TRANSACTION READ ONLY", CallbackPhonesEntity.class).executeUpdate();
+//        "SELECT * FROM callback_phones WHERE id=(SELECT max(id) FROM callback_phones);"
+
+        CallbackPhonesEntity callbackPhonesEntity = session.createQuery("from CallbackPhonesEntity as c WHERE c.id = (SELECT max(ce.id) FROM CallbackPhonesEntity as ce);",
+                CallbackPhonesEntity.class).getSingleResult();
+        System.out.println(callbackPhonesEntity.getPhone());
+
+        session.getTransaction().commit();
+    }
 
 }

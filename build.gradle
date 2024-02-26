@@ -8,6 +8,10 @@ plugins {
 group 'ru.yadoma-realty'
 version '1.0-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
+
 
 allure {
     report {
@@ -21,11 +25,6 @@ allure {
             }
         }
     }
-}
-
-
-repositories {
-    mavenCentral()
 }
 
 
