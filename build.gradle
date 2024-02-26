@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+    id "io.freefair.lombok" version "8.6"
+    id 'org.gradle.test-retry' version '1.5.8'
+}
+
+group 'ru.yadoma-realty'
+version '1.0-SNAPSHOT'
+
+
+allure {
+    report {
+        version.set("2.25.0")
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            junit5 {
+                adapterVersion.set("2.25.0")
+            }
+        }
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter:5.10.2',
+
+            'com.codeborne:selenide:7.1.0',
+
+            'io.rest-assured:rest-assured:5.4.0',
+
+            'io.qameta.allure:allure-selenide:2.25.0',
+            "io.qameta.allure:allure-rest-assured:2.25.0",
+
+            'com.github.javafaker:javafaker:1.0.2',
+            'org.aeonbits.owner:owner:1.0.12',
+
+            'mysql:mysql-connector-java:8.0.33',
+            'org.hibernate:hibernate-core:6.4.2.Final',
+
+            'com.fasterxml.jackson.core:jackson-databind:2.16.1',
+
+            'org.slf4j:slf4j-simple:2.0.11',
+            'org.slf4j:slf4j-log4j12:2.0.11',
+
+            'com.jayway.jsonpath:json-path:2.8.0',
+            'org.decimal4j:decimal4j:1.0.3',
+            'com.codeborne:pdf-test:1.8.1'
+    )
+}
+
+tasks.withType(Test) {//благодаря этой строчке передаются параметры в скрипт сборки
+    useJUnitPlatform()
+    systemProperties(System.getProperties())
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperties(System.getProperties())
+    retry {
+        maxRetries = 1
+        maxFailures = 10
+        failOnPassedAfterRetry = true
+    }
+}
+
+task api_test(type: Test) {
+    useJUnitPlatform {
+        includeTags "api"
+    }
+}
+
+
+task web_test(type: Test) {
+    useJUnitPlatform {
+        includeTags "web"
+    }
+}
