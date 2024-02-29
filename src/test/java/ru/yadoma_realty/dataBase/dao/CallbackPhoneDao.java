@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CallbackPhoneDao {
     private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.buildSessionFactory();
 
-    public static String getPhoneNumberFromLastEntryCallbackPhones() {
+    public static String getPhoneNumberFromLastEntry() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
@@ -26,7 +26,7 @@ public class CallbackPhoneDao {
         return phoneNumber;
     }
 
-    public static String getLinkFromLastEntryCallbackPhones() {
+    public static String getLinkFromLastEntry() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 

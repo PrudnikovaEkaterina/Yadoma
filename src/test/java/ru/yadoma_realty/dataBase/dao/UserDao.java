@@ -10,14 +10,16 @@ import ru.yadoma_realty.hibernate.HibernateUtil;
 public class UserDao {
     private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.buildSessionFactory();
 
-    public static Long getUserId (String userPhoneNumber) {
+    public static int getUserIdWithSetParameterPhoneNumber (String userPhoneNumber) {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select u.id from UserEntity u where u.phone=?1";
 
         var result = session.createQuery(query, Long.class)
-                .setParameter(1, userPhoneNumber).uniqueResult();
+                .setParameter(1, userPhoneNumber)
+                .uniqueResult()
+                .intValue();
 
         session.getTransaction().commit();
 

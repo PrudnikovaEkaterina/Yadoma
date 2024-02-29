@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.yadoma_realty.dataBase.entities.CallbackPhoneEntity;
 import ru.yadoma_realty.dataBase.entities.FavoriteEntity;
+import ru.yadoma_realty.dataBase.entities.MarketcallBundleBuildingEntity;
 import ru.yadoma_realty.dataBase.entities.UserEntity;
 
 @Slf4j
@@ -19,6 +20,7 @@ public enum HibernateUtil {
                         .addAnnotatedClass(CallbackPhoneEntity.class)
                         .addAnnotatedClass(FavoriteEntity.class)
                         .addAnnotatedClass(UserEntity.class)
+                        .addAnnotatedClass(MarketcallBundleBuildingEntity.class)
                         .buildSessionFactory();
 
             } catch (Throwable ex) {
