@@ -4,25 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "callback_phones")
-public class CallbackPhonesEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "phone")
-    private String phone;
-
+@Embeddable
+public class FavoriteEntityPrimaryKey implements Serializable {
     @Column(name = "user_id")
-    private String userId;
+    private int userId;
 
-    @Column(name = "link")
-    private String link;
+    @Column(name = "entity_type")
+    private int entityType;
+
+    @Column(name = "entity_id")
+    private int entityId;
+
 }
