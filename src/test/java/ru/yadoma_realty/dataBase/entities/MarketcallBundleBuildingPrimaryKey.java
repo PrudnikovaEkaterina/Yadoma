@@ -1,9 +1,11 @@
 package ru.yadoma_realty.dataBase.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
+import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
+
+import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -12,11 +14,14 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Embeddable
-public class MarketcallBundleBuildingPrimaryKey {
-    @Column(name = "bundle_id")
-    private int bundleId;
+public class MarketcallBundleBuildingPrimaryKey implements Serializable {
 
-    @Column(name = "building_id")
-    private int buildingId;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "bundle_id", referencedColumnName = "id")
+    private MarketcallBundleEntity marketcallBundle;
+
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "building_id", referencedColumnName = "id")
+    private BuildingEntity building;
 
 }

@@ -6,7 +6,12 @@ import org.hibernate.SessionFactory;
 import ru.yadoma_realty.hibernate.HibernateSession;
 import ru.yadoma_realty.hibernate.HibernateUtil;
 import ru.yadoma_realty.dataBase.entities.CallbackPhoneEntity;
+
 import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+import static ru.yadoma_realty.dataBase.exeption.NoEntityException.noEntityException;
 
 @Slf4j
 public class CallbackPhoneDao {
@@ -17,28 +22,27 @@ public class CallbackPhoneDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "FROM CallbackPhoneEntity c WHERE c.id=(SELECT max(ce.id) FROM CallbackPhoneEntity ce)";
-        var phoneNumber = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
+        var result = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
                 .map(CallbackPhoneEntity::getPhone)
-                .orElse(null);
+                .orElseThrow(noEntityException("Телефонный номер не найден"));
 
         session.getTransaction().commit();
 
-        return phoneNumber;
+        return result;
     }
 
     public static String getLinkFromLastEntry() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
-
         var query = "FROM CallbackPhoneEntity c WHERE c.id=(SELECT max(ce.id) FROM CallbackPhoneEntity ce)";
 
-        var link = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
+        var result = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
                 .map(CallbackPhoneEntity::getLink)
-                .orElse(null);
+                .orElseThrow(noEntityException("Ссылка не найдена"));
 
         session.getTransaction().commit();
 
-        return link;
+        return result;
     }
 
 }

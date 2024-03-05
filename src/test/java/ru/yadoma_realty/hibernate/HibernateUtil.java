@@ -3,10 +3,9 @@ package ru.yadoma_realty.hibernate;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.yadoma_realty.dataBase.entities.CallbackPhoneEntity;
-import ru.yadoma_realty.dataBase.entities.FavoriteEntity;
-import ru.yadoma_realty.dataBase.entities.MarketcallBundleBuildingEntity;
-import ru.yadoma_realty.dataBase.entities.UserEntity;
+import ru.yadoma_realty.dataBase.entities.*;
+import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
+import ru.yadoma_realty.dataBase.entities.buildingEntity.FlatEntity;
 
 @Slf4j
 public enum HibernateUtil {
@@ -21,6 +20,10 @@ public enum HibernateUtil {
                         .addAnnotatedClass(FavoriteEntity.class)
                         .addAnnotatedClass(UserEntity.class)
                         .addAnnotatedClass(MarketcallBundleBuildingEntity.class)
+                        .addAnnotatedClass(MarketcallBundleEntity.class)
+                        .addAnnotatedClass(BuildingEntity.class)
+                        .addAnnotatedClass(GarAddressObjectEntity.class)
+                        .addAnnotatedClass(FlatEntity.class)
                         .buildSessionFactory();
 
             } catch (Throwable ex) {
