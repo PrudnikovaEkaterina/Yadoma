@@ -2,6 +2,7 @@ package ru.yadoma_realty.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import ru.yadoma_realty.dataBase.dao.BuildingDao;
 
 
 @Slf4j
@@ -23,6 +24,10 @@ public class AllTests {
 //        System.out.println(MarketcallBundleBuildingDao.collectDistinctBuildingIdWhereSetRegionCodeExternalIdNotDeletedAt(5404));
 //        System.out.println(BuildingDao.collectBuildingRoomTypeValues(17669));
 //        System.out.println(BuildingDao.collectBuildingPricesTitleToList(17799));
-//        System.out.println(BuildingDao.collectDistinctBuildingIdWithoutFlatsWithSetRegionCodeAndExistUnitPriceMin());
+//        System.out.println(BuildingDao.collectBuildingIdWithoutFlatsWithSetRegionCodeAndPricesExistUnitPriceMin());
+//        System.out.println(BuildingDao.collectBuildingIdWithoutFlatsWithSetRegionCodeAndPricesExistAreaMin());
+//        System.out.println(BuildingDao.collectBuildingIdToListWithSetParentId(17799));
+        System.out.println(BuildingDao.getBuildingReleaseYear(3744));
+        System.out.println(BuildingDao.getBuildingReleaseQuarter(3744));
     }
 }

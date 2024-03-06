@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import ru.yadoma_realty.dataBase.entities.FlatEntity;
 import ru.yadoma_realty.dataBase.entities.GarAddressObjectEntity;
 import ru.yadoma_realty.dataBase.entities.MarketcallBundleBuildingPrimaryKey;
 

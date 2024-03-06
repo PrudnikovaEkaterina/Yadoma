@@ -11,7 +11,7 @@ import java.util.Map;
 @Builder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TypeFlatsJson implements Serializable {
+public class ReleaseYearJson implements Serializable {
     public String title;
     public Map<String, String> values;
 }
