@@ -7,34 +7,34 @@ import ru.yadoma_realty.hibernate.HibernateSession;
 import ru.yadoma_realty.hibernate.HibernateUtil;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.lang.Integer.*;
-import static ru.yadoma_realty.dataBase.exeption.NoEntityException.noEntityException;
+import static java.util.stream.Collectors.toList;
+
 
 public class BuildingDao {
     private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.buildSessionFactory();
 
-    public static Collection<String> collectBuildingRoomTypeValues(int buildingId) {
+    public static Optional<ArrayList<String>> collectBuildingRoomTypeValuesToList(int buildingId) {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
-        var result = Optional.ofNullable(session.createQuery(query, BuildingDataJson.class)
-                        .setParameter(1, buildingId)
-                        .uniqueResult())
+        List<String> resultList = new ArrayList<>();
+        var result = session.createQuery(query, BuildingDataJson.class)
+                .setParameter(1, buildingId)
+                .uniqueResultOptional()
                 .map(BuildingDataJson::getProperties)
                 .map(PropertyJson::getTypeFlats)
                 .map(TypeFlatsJson::getValues)
                 .map(Map::values)
-                .orElseThrow(noEntityException("JSON_EXTRACT (data_json, \"$.properties.202.values.*\") для ЖК {0} не найден.", buildingId));
+                .map(ArrayList::new);
 
         session.getTransaction().commit();
 
         return result;
     }
 
-    public static List<String> collectBuildingPricesTitleToList(int buildingId) {
+    public static Optional<List<String>> collectBuildingPricesTitleToList(int buildingId) {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
@@ -43,8 +43,7 @@ public class BuildingDao {
                 .setParameter(1, buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getPricesList)
-                .map(list -> list.stream().map(PriceJson::getTitle).collect(Collectors.toList()))
-                .orElseThrow(noEntityException("JSON_EXTRACT (data_json, \"$.prices[*].title\")для ЖК {0} не найден.", buildingId));
+                .map(list -> list.stream().map(PriceJson::getTitle).collect(toList()));
 
         session.getTransaction().commit();
 
@@ -133,7 +132,7 @@ public class BuildingDao {
         return result;
     }
 
-    public static List<String> collectDistinctBuildingTitleEngWithSetRegionCodeAndFlatsStatus1ToList() {
+    public static List<String> collectDistinctBuildingTitleEngWithSetRegionCodeAndFlatsStatusToList() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
@@ -145,7 +144,7 @@ public class BuildingDao {
         return result;
     }
 
-    public static List<Long> collectDistinctBuildingGarObjectIdWithSetRegionCodeAndFlatsStatus1ToList() {
+    public static List<Long> collectDistinctBuildingGarObjectIdWithSetRegionCodeAndFlatsStatusToList() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
@@ -157,4 +156,59 @@ public class BuildingDao {
         return result;
     }
 
+    public static List<Integer> collectDistinctBuildingIdWithSetRegionCodeAndFlatsStatusToList() {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "SELECT DISTINCT b.id from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
+        var result = session.createQuery(query, Integer.class).list();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
+
+    public static List<Integer> collectBuildingIdWithoutFlatsWithSetRegionCodeAndExistPricesAndNullParentId() {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in (50, 77) and " +
+                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
+                "JSON_VALUE (b.dataJson, \"$.prices[*].*\") is not null and b.parentId is null";
+        var result = session.createQuery(query, Integer.class)
+                .list();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
+
+    public static Optional<String> getTitleEngWithSetBuildingId(int buildingId) {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "select b.titleEng FROM BuildingEntity b WHERE b.id=?1";
+        var result = session.createQuery(query, String.class)
+                .setParameter(1, buildingId).uniqueResultOptional();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
+
+    public static Optional<Long> getBuildingPriceMinWithSetPricesTitle(int buildingId, String title) {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var result = session.createQuery(query, BuildingDataJson.class)
+                .setParameter(1, buildingId)
+                .uniqueResultOptional()
+                .map(BuildingDataJson::getPricesList)
+                .flatMap(list -> list.stream().filter(e -> e.getTitle().equals(title)).map(PriceJson::getPriceMin).toList().stream().findFirst());
+
+        session.getTransaction().commit();
+
+        return result;
+    }
 }
