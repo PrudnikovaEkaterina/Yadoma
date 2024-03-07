@@ -21,6 +21,9 @@ public class FlatEntity {
     @JoinColumn(name = "building_id", referencedColumnName = "id")
     private BuildingEntity building;
 
+    @Column(name = "house_id")
+    private Long houseId;
+
     @Column(name = "status")
     private Integer status;
 }

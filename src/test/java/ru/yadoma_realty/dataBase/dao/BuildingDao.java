@@ -100,7 +100,6 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
-
         var result = session.createQuery(query, BuildingDataJson.class)
                 .setParameter(1, buildingId)
                 .uniqueResultOptional()
@@ -120,7 +119,6 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
-
         var result = session.createQuery(query, BuildingDataJson.class)
                 .setParameter(1, buildingId)
                 .uniqueResultOptional()
@@ -134,4 +132,29 @@ public class BuildingDao {
 
         return result;
     }
+
+    public static List<String> collectDistinctBuildingTitleEngWithSetRegionCodeAndFlatsStatus1ToList() {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "SELECT DISTINCT b.titleEng from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
+        var result = session.createQuery(query, String.class).list();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
+
+    public static List<Long> collectDistinctBuildingGarObjectIdWithSetRegionCodeAndFlatsStatus1ToList() {
+        @Cleanup
+        var session = HibernateSession.getSession(sessionFactory);
+
+        var query = "SELECT DISTINCT b.garAddressObject.ObjectId from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
+        var result = session.createQuery(query, Long.class).list();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
+
 }

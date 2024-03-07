@@ -1,5 +1,6 @@
 package ru.yadoma_realty.dataBase.entities.buildingEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-@ToString (exclude = {"garAddressObject", "dataJson", "marketcallBundleBuildingPrimaryKeyList"})
+@ToString(exclude = {"garAddressObject", "dataJson", "marketcallBundleBuildingPrimaryKeyList", "flatEntity"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +31,7 @@ public class BuildingEntity {
     @Column(name = "title_eng")
     private String titleEng;
 
-    @ManyToOne (cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "gar_object_id", referencedColumnName = "OBJECTID")
     private GarAddressObjectEntity garAddressObject;
 
@@ -47,12 +48,12 @@ public class BuildingEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private BuildingDataJson dataJson;
 
-    @OneToMany(mappedBy="building")
+    @OneToMany(mappedBy = "building")
     @Transient //поле игнорируется при запросе users из базы
-    private List<MarketcallBundleBuildingPrimaryKey> marketcallBundleBuildingPrimaryKeyList;
+    private List<MarketcallBundleBuildingPrimaryKey> marketcallBundleBuildingPrimaryKey;
 
-    @OneToMany (mappedBy = "building") // 1 garAddress может принадлежать многим ЖК
-    @Transient
-    private List<FlatEntity> flatEntityList;
+    @OneToMany(mappedBy = "building")
+//  @Transient
+    private List<FlatEntity> flatEntity;
 
 }
