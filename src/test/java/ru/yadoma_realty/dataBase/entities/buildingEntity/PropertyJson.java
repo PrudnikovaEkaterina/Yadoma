@@ -17,4 +17,10 @@ public class PropertyJson implements Serializable {
     @JsonProperty("202")
     private TypeFlatsJson typeFlats;
 
+    @JsonProperty("241")
+    private ReleaseYearJson releaseYear;
+
+    @JsonProperty("242")
+    private ReleaseQuarterJson releaseQuarter;
+
 }

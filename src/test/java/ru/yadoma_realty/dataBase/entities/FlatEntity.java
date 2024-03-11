@@ -1,8 +1,9 @@
-package ru.yadoma_realty.dataBase.entities.buildingEntity;
+package ru.yadoma_realty.dataBase.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -19,6 +20,9 @@ public class FlatEntity {
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "building_id", referencedColumnName = "id")
     private BuildingEntity building;
+
+    @Column(name = "house_id")
+    private Long houseId;
 
     @Column(name = "status")
     private Integer status;

@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.yadoma_realty.dataBase.entities.*;
 import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
-import ru.yadoma_realty.dataBase.entities.buildingEntity.FlatEntity;
+import ru.yadoma_realty.dataBase.entities.FlatEntity;
 
 @Slf4j
 public enum HibernateUtil {
