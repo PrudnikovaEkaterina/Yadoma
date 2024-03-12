@@ -1,8 +1,9 @@
-package ru.yadoma_realty.dataBase.entities;
+package ru.yadoma_realty.dataBase.entities.marketcallBundleBuildingEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import ru.yadoma_realty.dataBase.entities.MarketcallBundleEntity;
 import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
 
 import java.io.Serializable;

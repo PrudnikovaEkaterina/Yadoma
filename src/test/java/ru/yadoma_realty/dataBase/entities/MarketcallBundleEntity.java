@@ -3,6 +3,7 @@ package ru.yadoma_realty.dataBase.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import ru.yadoma_realty.dataBase.entities.marketcallBundleBuildingEntity.MarketcallBundleBuildingPrimaryKey;
 
 import java.util.Date;
 import java.util.List;

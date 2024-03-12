@@ -1,6 +1,5 @@
 package ru.yadoma_realty.dataBase.entities.buildingEntity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,13 +7,13 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import ru.yadoma_realty.dataBase.entities.FlatEntity;
 import ru.yadoma_realty.dataBase.entities.GarAddressObjectEntity;
-import ru.yadoma_realty.dataBase.entities.MarketcallBundleBuildingPrimaryKey;
+import ru.yadoma_realty.dataBase.entities.marketcallBundleBuildingEntity.MarketcallBundleBuildingPrimaryKey;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-@ToString(exclude = {"garAddressObject", "dataJson", "marketcallBundleBuildingPrimaryKeyList", "flatEntity"})
+@ToString(exclude = {"garAddressObject", "dataJson", "flatEntity"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -6,6 +6,8 @@ import org.hibernate.cfg.Configuration;
 import ru.yadoma_realty.dataBase.entities.*;
 import ru.yadoma_realty.dataBase.entities.buildingEntity.BuildingEntity;
 import ru.yadoma_realty.dataBase.entities.FlatEntity;
+import ru.yadoma_realty.dataBase.entities.favoriteEntity.FavoriteEntity;
+import ru.yadoma_realty.dataBase.entities.marketcallBundleBuildingEntity.MarketcallBundleBuildingEntity;
 
 @Slf4j
 public enum HibernateUtil {

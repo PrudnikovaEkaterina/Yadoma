@@ -4,11 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import ru.yadoma_realty.dataBase.dao.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-
 
 @Slf4j
 public class AllTests {
@@ -39,6 +34,8 @@ public class AllTests {
 //        System.out.println(BuildingDao.collectDistinctBuildingIdWithSetRegionCodeAndFlatsStatusToList().size());
 //        System.out.println(BuildingDao.collectBuildingIdWithoutFlatsWithSetRegionCodeAndExistPricesAndNullParentId());
 //        System.out.println(BuildingDao.getTitleEngWithSetBuildingId(17799));
-        System.out.println(BuildingDao.getBuildingPriceMinWithSetPricesTitle(17799, "Продажа"));
+//        System.out.println(BuildingDao.getBuildingPriceMinWithSetBuildingIdAndPricesTitle(17799, "Продажа"));
+//        System.out.println(FlatDao.collectDistinctBuildingIdWithSetFloorAndStatus(105));
+        System.out.println(FlatDao.collectDistinctBuildingIdWithSetPaymentMethodAndStatus("mortage"));
     }
 }

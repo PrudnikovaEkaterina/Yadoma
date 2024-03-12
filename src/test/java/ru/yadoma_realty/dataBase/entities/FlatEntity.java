@@ -26,4 +26,11 @@ public class FlatEntity {
 
     @Column(name = "status")
     private Integer status;
+
+    @Column(name = "floor")
+    private Integer floor;
+
+    @Embedded
+    private FlatPaymentMethod paymentMethod;
+
 }

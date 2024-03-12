@@ -1,4 +1,4 @@
-package ru.yadoma_realty.dataBase.entities;
+package ru.yadoma_realty.dataBase.entities.marketcallBundleBuildingEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;

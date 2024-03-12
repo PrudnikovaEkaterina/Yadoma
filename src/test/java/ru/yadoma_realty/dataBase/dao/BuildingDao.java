@@ -19,7 +19,7 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
-        List<String> resultList = new ArrayList<>();
+
         var result = session.createQuery(query, BuildingDataJson.class)
                 .setParameter(1, buildingId)
                 .uniqueResultOptional()
@@ -196,7 +196,7 @@ public class BuildingDao {
         return result;
     }
 
-    public static Optional<Long> getBuildingPriceMinWithSetPricesTitle(int buildingId, String title) {
+    public static Optional<Long> getBuildingPriceMinWithSetBuildingIdAndPricesTitle(int buildingId, String title) {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
