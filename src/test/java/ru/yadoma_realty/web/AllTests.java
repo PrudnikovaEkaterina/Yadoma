@@ -3,6 +3,7 @@ package ru.yadoma_realty.web;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import ru.yadoma_realty.dataBase.dao.*;
+import ru.yadoma_realty.enums.FinishingEnum;
 
 
 @Slf4j
@@ -36,6 +37,10 @@ public class AllTests {
 //        System.out.println(BuildingDao.getTitleEngWithSetBuildingId(17799));
 //        System.out.println(BuildingDao.getBuildingPriceMinWithSetBuildingIdAndPricesTitle(17799, "Продажа"));
 //        System.out.println(FlatDao.collectDistinctBuildingIdWithSetFloorAndStatus(105));
-        System.out.println(FlatDao.collectDistinctBuildingIdWithSetPaymentMethodAndStatus("mortage"));
+//        System.out.println(FlatDao.collectDistinctBuildingIdWithSetPaymentMethodAndStatus("subsidy"));
+//        System.out.println(FlatDao.collectDistinctBuildingIdWithSetFinishingAndStatus(FinishingEnum.FURNITURE));
+//        System.out.println(FlatDao.collectDistinctHouseIdWithSetBuildingIdAndStatus(9246));
+        System.out.println(FlatDao.collectDistinctHouseIdWithSetRegionCodeAndStatus());
+        RegionC
     }
 }

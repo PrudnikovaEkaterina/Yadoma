@@ -30,7 +30,9 @@ public class FlatEntity {
     @Column(name = "floor")
     private Integer floor;
 
+    @Column(name = "finishing")
+    private Integer finishing;
+
     @Embedded
     private FlatPaymentMethod paymentMethod;
-
 }

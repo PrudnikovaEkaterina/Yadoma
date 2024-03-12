@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.yadoma_realty.dataBase.converter.RoleConverter;
-import ru.yadoma_realty.dataBase.enums.RoleEnum;
+import ru.yadoma_realty.enums.RoleEnum;
 
 import java.util.Date;
 import java.util.List;

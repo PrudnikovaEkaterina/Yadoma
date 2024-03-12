@@ -2,7 +2,7 @@ package ru.yadoma_realty.dataBase.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.yadoma_realty.dataBase.enums.RoleEnum;
+import ru.yadoma_realty.enums.RoleEnum;
 
 
 

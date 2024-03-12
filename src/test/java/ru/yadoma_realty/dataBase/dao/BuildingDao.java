@@ -3,6 +3,7 @@ package ru.yadoma_realty.dataBase.dao;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
 import ru.yadoma_realty.dataBase.entities.buildingEntity.*;
+import ru.yadoma_realty.enums.RegionCodeEnum;
 import ru.yadoma_realty.hibernate.HibernateSession;
 import ru.yadoma_realty.hibernate.HibernateUtil;
 
@@ -18,10 +19,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id= :buildingId";
 
         var result = session.createQuery(query, BuildingDataJson.class)
-                .setParameter(1, buildingId)
+                .setParameter("buildingId", buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getProperties)
                 .map(PropertyJson::getTypeFlats)
@@ -38,9 +39,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id= :buildingId";
         var result = session.createQuery(query, BuildingDataJson.class)
-                .setParameter(1, buildingId)
+                .setParameter("buildingId", buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getPricesList)
                 .map(list -> list.stream().map(PriceJson::getTitle).collect(toList()));
@@ -54,10 +55,11 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in (50, 77) and " +
+        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
                 "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].unit_price_min\") is not null";
         var result = session.createQuery(query, Integer.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
                 .setMaxResults(5)
                 .list();
 
@@ -70,10 +72,11 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in (50, 77) and " +
+        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
                 "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].area_min\") is not null";
         var result = session.createQuery(query, Integer.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
                 .setMaxResults(5)
                 .list();
 
@@ -86,9 +89,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.id FROM BuildingEntity b WHERE b.parentId=?1";
+        var query = "select b.id FROM BuildingEntity b WHERE b.parentId=:buildingId";
         var result = session.createQuery(query, Integer.class)
-                .setParameter(1, parentId).list();
+                .setParameter("buildingId", parentId).list();
         session.getTransaction().commit();
 
         return result;
@@ -98,9 +101,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id= :buildingId";
         var result = session.createQuery(query, BuildingDataJson.class)
-                .setParameter(1, buildingId)
+                .setParameter("buildingId", buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getProperties)
                 .map(PropertyJson::getReleaseYear)
@@ -117,9 +120,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id= :buildingId";
         var result = session.createQuery(query, BuildingDataJson.class)
-                .setParameter(1, buildingId)
+                .setParameter("buildingId", buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getProperties)
                 .map(PropertyJson::getReleaseQuarter)
@@ -136,8 +139,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.titleEng from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
-        var result = session.createQuery(query, String.class).list();
+        var query = "SELECT DISTINCT b.titleEng from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var result = session.createQuery(query, String.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .list();
 
         session.getTransaction().commit();
 
@@ -148,8 +153,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.garAddressObject.ObjectId from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
-        var result = session.createQuery(query, Long.class).list();
+        var query = "SELECT DISTINCT b.garAddressObject.ObjectId from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var result = session.createQuery(query, Long.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .list();
 
         session.getTransaction().commit();
 
@@ -160,8 +167,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.id from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in (50, 77) and f.status=1";
-        var result = session.createQuery(query, Integer.class).list();
+        var query = "SELECT DISTINCT b.id from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var result = session.createQuery(query, Integer.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .list();
 
         session.getTransaction().commit();
 
@@ -172,10 +181,11 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in (50, 77) and " +
+        var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
                 "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].*\") is not null and b.parentId is null";
         var result = session.createQuery(query, Integer.class)
+                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
                 .list();
 
         session.getTransaction().commit();
@@ -187,9 +197,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.titleEng FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.titleEng FROM BuildingEntity b WHERE b.id= :buildingId";
         var result = session.createQuery(query, String.class)
-                .setParameter(1, buildingId).uniqueResultOptional();
+                .setParameter("buildingId", buildingId).uniqueResultOptional();
 
         session.getTransaction().commit();
 
@@ -200,9 +210,9 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id=?1";
+        var query = "select b.dataJson FROM BuildingEntity b WHERE b.id= :buildingId";
         var result = session.createQuery(query, BuildingDataJson.class)
-                .setParameter(1, buildingId)
+                .setParameter("buildingId", buildingId)
                 .uniqueResultOptional()
                 .map(BuildingDataJson::getPricesList)
                 .flatMap(list -> list.stream().filter(e -> e.getTitle().equals(title)).map(PriceJson::getPriceMin).toList().stream().findFirst());
