@@ -29,9 +29,9 @@ public class MarketcallBundleDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT m.title from MarketcallBundleEntity m where m.deletedAt is null and m.externalId=?1";
+        var query = "SELECT m.title from MarketcallBundleEntity m where m.deletedAt is null and m.externalId=:externalId";
         var result = session.createQuery(query, String.class)
-                        .setParameter(1, externalId)
+                        .setParameter("externalId", externalId)
                         .uniqueResultOptional();
 
 
