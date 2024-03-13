@@ -2,14 +2,14 @@ package ru.yadoma_realty.dataBase.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.yadoma_realty.enums.RoleEnum;
+import ru.yadoma_realty.enums.UserRoles;
 
 
 
 @Converter(autoApply = true)
-public class RoleConverter implements AttributeConverter<RoleEnum, Integer> {
+public class RoleConverter implements AttributeConverter<UserRoles, Integer> {
     @Override
-    public Integer convertToDatabaseColumn(RoleEnum value) {
+    public Integer convertToDatabaseColumn(UserRoles value) {
         if (value == null)
             return null;
 
@@ -23,14 +23,14 @@ public class RoleConverter implements AttributeConverter<RoleEnum, Integer> {
     }
 
     @Override
-    public RoleEnum convertToEntityAttribute(Integer dbData) {
+    public UserRoles convertToEntityAttribute(Integer dbData) {
         if (dbData == null)
             return null;
 
         return switch (dbData) {
-            case 1 -> RoleEnum.USER;
-            case 2 -> RoleEnum.MANAGER;
-            case 99 -> RoleEnum.ADMIN;
+            case 1 -> UserRoles.USER;
+            case 2 -> UserRoles.MANAGER;
+            case 99 -> UserRoles.ADMIN;
             default -> throw new IllegalArgumentException(dbData + " not supported.");
         };
     }

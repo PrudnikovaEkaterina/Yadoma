@@ -33,6 +33,12 @@ public class FlatEntity {
     @Column(name = "finishing")
     private Integer finishing;
 
+    @Column(name = "price_total")
+    private Long priceTotal;
+
+    @Column(name = "area_total")
+    private Double areaTotal;
+
     @Embedded
     private FlatPaymentMethod paymentMethod;
 }

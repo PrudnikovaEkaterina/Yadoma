@@ -25,15 +25,15 @@ public class MarketcallBundleDao {
         return result;
     }
 
-    public static String getTitleNotDeletedAtAndSetParameterExternalId(int externalId) {
+    public static Optional<String> getTitleNotDeletedAtAndSetParameterExternalId(int externalId) {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "SELECT m.title from MarketcallBundleEntity m where m.deletedAt is null and m.externalId=?1";
-        var result = Optional.ofNullable(session.createQuery(query, String.class)
+        var result = session.createQuery(query, String.class)
                         .setParameter(1, externalId)
-                        .uniqueResult())
-                .orElseThrow(noEntityException("Title from MarketcallBundleEntity where deletedAt is null and externalId= {0} НЕ НАЙДЕН.", externalId));
+                        .uniqueResultOptional();
+
 
         session.getTransaction().commit();
 

@@ -5,12 +5,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public enum RegionCodeEnum {
+public enum RegionCode {
      LENINGRADREGION (47), MOSCOWREGION (50), ROSTOVREGION (61), MOSCOW (77), SAINTPETERSBURG (78);
 
      private final int regionCode;
 
-    RegionCodeEnum(int regionCode) {
+    RegionCode(int regionCode) {
         this.regionCode = regionCode;
     }
 

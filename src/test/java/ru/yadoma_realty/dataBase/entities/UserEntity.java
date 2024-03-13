@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.yadoma_realty.dataBase.converter.RoleConverter;
-import ru.yadoma_realty.enums.RoleEnum;
+import ru.yadoma_realty.enums.UserRoles;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserEntity {
 
     @Column(name = "role")
     @Convert(converter = RoleConverter.class)
-    private RoleEnum role;
+    private UserRoles role;
 
     @Column(name = "status")
     private Integer status;

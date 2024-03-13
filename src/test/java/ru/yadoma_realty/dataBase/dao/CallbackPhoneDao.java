@@ -22,7 +22,8 @@ public class CallbackPhoneDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "FROM CallbackPhoneEntity c WHERE c.id=(SELECT max(ce.id) FROM CallbackPhoneEntity ce)";
-        var result = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
+        var result = session.createQuery(query, CallbackPhoneEntity.class)
+                .uniqueResultOptional()
                 .map(CallbackPhoneEntity::getPhone)
                 .orElseThrow(noEntityException("Телефонный номер не найден"));
 
@@ -31,14 +32,14 @@ public class CallbackPhoneDao {
         return result;
     }
 
-    public static String getLinkFromLastEntry() {
+    public static Optional<String> getLinkFromLastEntry() {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
         var query = "FROM CallbackPhoneEntity c WHERE c.id=(SELECT max(ce.id) FROM CallbackPhoneEntity ce)";
 
-        var result = Optional.ofNullable(session.createQuery(query, CallbackPhoneEntity.class).uniqueResult())
-                .map(CallbackPhoneEntity::getLink)
-                .orElseThrow(noEntityException("Ссылка не найдена"));
+        var result = session.createQuery(query, CallbackPhoneEntity.class)
+                .uniqueResultOptional()
+                .map(CallbackPhoneEntity::getLink);
 
         session.getTransaction().commit();
 

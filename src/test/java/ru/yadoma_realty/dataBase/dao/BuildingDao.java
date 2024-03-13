@@ -3,7 +3,8 @@ package ru.yadoma_realty.dataBase.dao;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
 import ru.yadoma_realty.dataBase.entities.buildingEntity.*;
-import ru.yadoma_realty.enums.RegionCodeEnum;
+import ru.yadoma_realty.enums.FlatStatus;
+import ru.yadoma_realty.enums.RegionCode;
 import ru.yadoma_realty.hibernate.HibernateSession;
 import ru.yadoma_realty.hibernate.HibernateUtil;
 
@@ -56,10 +57,11 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
-                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
+                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=:status) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].unit_price_min\") is not null";
         var result = session.createQuery(query, Integer.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .setMaxResults(5)
                 .list();
 
@@ -73,10 +75,11 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
-                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
+                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=:status) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].area_min\") is not null";
         var result = session.createQuery(query, Integer.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .setMaxResults(5)
                 .list();
 
@@ -139,9 +142,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.titleEng from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var query = "SELECT DISTINCT b.titleEng from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=:status";
         var result = session.createQuery(query, String.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .list();
 
         session.getTransaction().commit();
@@ -153,9 +157,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.garAddressObject.ObjectId from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var query = "SELECT DISTINCT b.garAddressObject.ObjectId from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=:status";
         var result = session.createQuery(query, Long.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .list();
 
         session.getTransaction().commit();
@@ -167,9 +172,10 @@ public class BuildingDao {
         @Cleanup
         var session = HibernateSession.getSession(sessionFactory);
 
-        var query = "SELECT DISTINCT b.id from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=1";
+        var query = "SELECT DISTINCT b.id from BuildingEntity b inner join b.flatEntity f WHERE b.garAddressObject.regionCode in :regionCode and f.status=:status";
         var result = session.createQuery(query, Integer.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .list();
 
         session.getTransaction().commit();
@@ -182,10 +188,11 @@ public class BuildingDao {
         var session = HibernateSession.getSession(sessionFactory);
 
         var query = "select b.id from BuildingEntity b where b.garAddressObject.regionCode in :regionCode and " +
-                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=1) and " +
+                "not exists (select 1 from FlatEntity f where f.building.id = b.id and f.status=:status) and " +
                 "JSON_VALUE (b.dataJson, \"$.prices[*].*\") is not null and b.parentId is null";
         var result = session.createQuery(query, Integer.class)
-                .setParameterList("regionCode", RegionCodeEnum.getMskMoCodes())
+                .setParameterList("regionCode", RegionCode.getMskMoCodes())
+                .setParameter("status", FlatStatus.PUBLISHED.getValue())
                 .list();
 
         session.getTransaction().commit();
