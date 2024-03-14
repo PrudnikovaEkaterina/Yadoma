@@ -1,12 +1,8 @@
-package ru.yadoma_realty.web;
+package ru.yadoma_realty.allTest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import ru.yadoma_realty.dataBase.dao.*;
-import ru.yadoma_realty.enums.EntityType;
-import ru.yadoma_realty.enums.FinishingTypes;
-
-import java.util.Map;
+import ru.yadoma_realty.dataBase.dao.FlatDao;
 
 
 @Slf4j
@@ -48,6 +44,6 @@ public class AllTests {
 //        System.out.println(FlatDao.countAllWithSetBuildingIdAndFlatStatus(4496));
 //        System.out.println(FlatDao.countAllWithFilterPriceTotalAndSetBuildingIdAndFlatStatus(4496, 8000000, 9000000));
 //        System.out.println(FlatDao.countAllWithFilterAreaTotalAndSetBuildingIdAndFlatStatus(4496, 20.0, 25.0));
-//        System.out.println(FlatDao.countAllWithFilterFloorAndSetBuildingIdAndFlatStatus(4496, 5, 7));
+        System.out.println(FlatDao.countAllWithFilterFloorAndSetBuildingIdAndFlatStatus(4496, 5, 7));
     }
 }
