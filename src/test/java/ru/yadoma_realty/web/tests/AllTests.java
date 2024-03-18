@@ -1,12 +1,18 @@
-package ru.yadoma_realty.allTest;
+package ru.yadoma_realty.web.tests;
 
+import com.codeborne.selenide.Selenide;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import ru.yadoma_realty.dataBase.dao.FlatDao;
+import ru.yadoma_realty.api.steps.auth_api_steps.AuthApiSteps;
+import ru.yadoma_realty.web.pages.MePage;
+
+import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.Selenide.open;
+import static ru.yadoma_realty.utils.AuthCookies.*;
 
 
 @Slf4j
-public class AllTests {
+public class AllTests extends TestBase {
     @Test
     void test1() {
 //        System.out.println(CallbackPhoneDao.getPhoneNumberFromLastEntry());
@@ -44,6 +50,16 @@ public class AllTests {
 //        System.out.println(FlatDao.countAllWithSetBuildingIdAndFlatStatus(4496));
 //        System.out.println(FlatDao.countAllWithFilterPriceTotalAndSetBuildingIdAndFlatStatus(4496, 8000000, 9000000));
 //        System.out.println(FlatDao.countAllWithFilterAreaTotalAndSetBuildingIdAndFlatStatus(4496, 20.0, 25.0));
-        System.out.println(FlatDao.countAllWithFilterFloorAndSetBuildingIdAndFlatStatus(4496, 5, 7));
+//        System.out.println(FlatDao.countAllWithFilterFloorAndSetBuildingIdAndFlatStatus(4496, 5, 7));
+//        AuthApiSteps.authRegister(UsersForTesting.USER_WITHOUT_MANAGER);
+//        var a = AuthApiSteps.authLogin(UsersForTesting.USER_WITHOUT_MANAGER);
+//        String refreshToken = AuthApiSteps.getRefreshToken(a);
+//        String referralCode = AuthApiSteps.getReferralCode(a);
+//        String sessionExpiresAtCookie = AuthApiSteps.getSessionExpiresAtCookie(a);
+//        System.out.println(referralCode);
+//        MePage mePage = new MePage();
+//        mePage.openMePageWithPreInstalledAPIAuth();
+
+
     }
 }

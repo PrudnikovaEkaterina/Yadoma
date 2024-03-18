@@ -1,0 +1,26 @@
+package ru.yadoma_realty.enums;
+
+import lombok.Getter;
+
+@Getter
+public enum UsersForTesting {
+//    ADMIN("79000000099"),
+//    MANAGER("79000000002"),
+    USER_79085040794("79085040794"),
+    USER_72342123122("72342123122"),
+    USER_79764334241("79764334241"),
+    USER_77000980987("77000980987"),
+    USER_79262231000("79262231000"),
+    USER_79520867229("79520867229"),
+    USER_79994817999("79994817999"),
+    USER_79293118880("79293118880"),
+    USER_70003423423("70003423423"),
+    USER_74734906753("74734906753"),
+    USER_75442348704("75442348704"),
+    USER_74869385646("74869385646");
+    private String phoneNumber;
+
+    UsersForTesting(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+}
