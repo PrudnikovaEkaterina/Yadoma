@@ -17,7 +17,6 @@ import java.util.Map;
 
 
 public class TestBase {
-
     @BeforeAll
     public static void setUp() {
         ProjectConfig projectConfig = ConfigCache.getOrCreate(ProjectConfig.class);
@@ -26,13 +25,13 @@ public class TestBase {
         Configuration.browserVersion = projectConfig.browserVersion();
         Configuration.browserSize = projectConfig.browserSize();
         Configuration.remote = projectConfig.remote();
-        Configuration.pageLoadStrategy = "eager";
+        Configuration.pageLoadStrategy="eager";
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
                 "enableVNC", true,
                 "enableVideo", true));
         Configuration.browserCapabilities = capabilities;
-//        System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
     }
 
     @BeforeEach

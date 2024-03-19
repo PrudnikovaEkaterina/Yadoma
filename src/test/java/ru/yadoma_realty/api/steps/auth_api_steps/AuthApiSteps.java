@@ -5,12 +5,16 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import io.restassured.http.Cookie;
 import org.aeonbits.owner.ConfigCache;
+import org.checkerframework.checker.units.qual.A;
 import ru.yadoma_realty.api.models.auth_models.LoginRequest;
 import ru.yadoma_realty.api.models.auth_models.LoginResponse;
 import ru.yadoma_realty.config.AuthConfig;
+import ru.yadoma_realty.enums.AuthCookies;
 import ru.yadoma_realty.enums.UsersForTesting;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
@@ -20,6 +24,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static ru.yadoma_realty.api.helpers.CustomAllureListener.withCustomTemplates;
 import static ru.yadoma_realty.api.specifications.Specification.*;
+import static ru.yadoma_realty.enums.AuthCookies.*;
 
 public class AuthApiSteps {
     static AuthConfig authConfig = ConfigCache.getOrCreate(AuthConfig.class);
@@ -60,15 +65,6 @@ public class AuthApiSteps {
         return authLogin(usersForTesting);
     }
 
-    @Step("Authorization and set refreshToken, sessionExpiresAt, referralCode to browser")
-    public static void authAndSetAuthCookiesToBrowser(UsersForTesting usersForTesting) {
-        var loginResponse = AuthApiSteps.auth(usersForTesting);
-        var refreshToken = AuthApiSteps.getRefreshToken(loginResponse);
-        var referralCode = Optional.ofNullable(AuthApiSteps.getReferralCode(loginResponse));
-        var sessionExpiresAtCookie = AuthApiSteps.getSessionExpiresAtCookie(loginResponse);
-        AuthApiSteps.setAuthCookiesToBrowser(refreshToken, sessionExpiresAtCookie, referralCode);
-    }
-
     @Step("Logout")
     public static void logout(String accessToken) {
         given()
@@ -104,15 +100,36 @@ public class AuthApiSteps {
         return loginResponse.accessToken();
     }
 
+    @Step("Collect list auth cookies from loginResponse")
+    public static Map<Enum<AuthCookies>, String> collectAuthCookies(UsersForTesting usersForTesting) {
+        var loginResponse = AuthApiSteps.auth(usersForTesting);
+        var resultMap = new HashMap<Enum<AuthCookies>, String>();
+        resultMap.put(REFRESH_TOKEN, getRefreshToken(loginResponse));
+        resultMap.put(SESSION_EXPIRES_AT, getSessionExpiresAtCookie(loginResponse));
+        resultMap.put(REFERRAL_CODE, getReferralCode(loginResponse));
+        resultMap.put(ACCESS_TOKEN, getAccessToken(loginResponse));
+        return resultMap;
+    }
+
+    @Step("Authorization and set refreshToken, sessionExpiresAt, referralCode to browser")
+    public static void authAndSetAuthCookiesToBrowser(UsersForTesting usersForTesting) {
+        var loginResponse = AuthApiSteps.auth(usersForTesting);
+        var refreshToken = AuthApiSteps.getRefreshToken(loginResponse);
+        var referralCode = AuthApiSteps.getReferralCode(loginResponse);
+        var sessionExpiresAtCookie = AuthApiSteps.getSessionExpiresAtCookie(loginResponse);
+        AuthApiSteps.setAuthCookiesToBrowser(refreshToken, sessionExpiresAtCookie, referralCode);
+    }
+
     @Step("Set refreshToken, sessionExpiresAt, referralCode to browser")
-    public static void setAuthCookiesToBrowser(String refreshToken, String sessionExpiresAt, Optional<String> referralCode) {
+    public static void setAuthCookiesToBrowser(String refreshToken, String sessionExpiresAt, String referralCode) {
         open(baseUrl + "/build/desktop/assets/header-logo.79405d96.svg");
+
 
         var refreshCookie = new org.openqa.selenium.Cookie("refresh_token", refreshToken);
         getWebDriver().manage().addCookie(refreshCookie);
 
-        if (referralCode.isPresent()) {
-            var referralCookie = new org.openqa.selenium.Cookie("ref", referralCode.get());
+        if (referralCode!=null) {
+            var referralCookie = new org.openqa.selenium.Cookie("ref", referralCode);
             getWebDriver().manage().addCookie(referralCookie);
         }
 

@@ -7,10 +7,12 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import ru.yadoma_realty.api.steps.auth_api_steps.AuthApiSteps;
+import ru.yadoma_realty.enums.AuthCookies;
 import ru.yadoma_realty.enums.UsersForTesting;
 import ru.yadoma_realty.web.pages.components.CallMeWidgetComponent;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -43,8 +45,8 @@ public class FavoritesPage {
             CALL_ME_WIDGET_BUTTON = $$(".call-me-widget__button");
 
     @Step("Open the Favorites page with pre-installed authorization cookies")
-    public FavoritesPage openFavoritesPageWithAPIAuth(UsersForTesting usersForTesting) {
-        AuthApiSteps.authAndSetAuthCookiesToBrowser(usersForTesting);
+    public FavoritesPage openFavoritesPageWithAPIAuth(String refreshToken, String sessionExpiresAt, String referralCode) {
+        AuthApiSteps.setAuthCookiesToBrowser(refreshToken,sessionExpiresAt, referralCode);
         open(baseUrl + "/favorites");
         return this;
     }

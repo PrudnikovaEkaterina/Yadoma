@@ -1,6 +1,7 @@
 package ru.yadoma_realty.utils;
 
 import com.github.javafaker.Faker;
+import ru.yadoma_realty.enums.BuildingForTesting;
 import ru.yadoma_realty.enums.UsersForTesting;
 
 public class GenerationData {
@@ -20,5 +21,9 @@ public class GenerationData {
 
     public static UsersForTesting setUsersForTesting() {
         return faker.options().option(UsersForTesting.values());
+    }
+
+    public static int setRandomBuildingId() {
+        return faker.options().option(BuildingForTesting.values()).id;
     }
 }

@@ -11,6 +11,8 @@ import ru.yadoma_realty.web.pages.AuthPage;
 import ru.yadoma_realty.web.pages.components.HeaderComponent;
 import ru.yadoma_realty.web.tests.TestBase;
 
+import static ru.yadoma_realty.utils.GenerationData.*;
+
 
 @Tag("Web")
 @Story("Auth")
@@ -29,9 +31,9 @@ public class AuthTests extends TestBase {
     @Disabled
     @DisplayName("Позитивная проверка регистрации нового пользователя")
     void registrationNewUserSuccessful() {
-        String phoneNumber = GenerationData.setRandomPhone();
+        String phoneNumber = setRandomPhone();
         String smsCode = authConfig.smsCode();
-        String userName = GenerationData.setRandomUserName();
+        String userName = setRandomUserName();
         authPage.
                 setPhone(phoneNumber)
                 .clickCheckboxAuthConfirm()
@@ -49,7 +51,7 @@ public class AuthTests extends TestBase {
     void authUserSuccessful() {
         String smsCode = authConfig.smsCode();
         authPage.
-                setPhone(GenerationData.setUsersForTesting().getPhoneNumber())
+                setPhone(setUsersForTesting().getPhoneNumber())
                 .clickCheckboxAuthConfirm()
                 .clickButtonSendCode()
                 .setSmsCode(smsCode);

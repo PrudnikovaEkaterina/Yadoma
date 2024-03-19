@@ -8,7 +8,7 @@ import ru.yadoma_realty.web.pages.MePage;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
-import static ru.yadoma_realty.utils.AuthCookies.*;
+
 
 
 @Slf4j
@@ -59,6 +59,8 @@ public class AllTests extends TestBase {
 //        System.out.println(referralCode);
 //        MePage mePage = new MePage();
 //        mePage.openMePageWithPreInstalledAPIAuth();
+
+        Selenide.open(baseUrl);
 
 
     }

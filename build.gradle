@@ -40,7 +40,8 @@ dependencies {
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.10.2',
 
-            'com.codeborne:selenide:7.2.1',
+//            'com.codeborne:selenide:7.2.1',
+            'com.codeborne:selenide:6.13.0',
 
             'io.rest-assured:rest-assured:5.4.0',
 
