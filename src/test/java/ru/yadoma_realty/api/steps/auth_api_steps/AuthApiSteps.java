@@ -5,9 +5,8 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import io.restassured.http.Cookie;
 import org.aeonbits.owner.ConfigCache;
-import org.checkerframework.checker.units.qual.A;
-import ru.yadoma_realty.api.models.auth_models.LoginRequest;
-import ru.yadoma_realty.api.models.auth_models.LoginResponse;
+import ru.yadoma_realty.api.models.auth_model.LoginRequest;
+import ru.yadoma_realty.api.models.auth_model.LoginResponse;
 import ru.yadoma_realty.config.AuthConfig;
 import ru.yadoma_realty.enums.AuthCookies;
 import ru.yadoma_realty.enums.UsersForTesting;
@@ -15,7 +14,6 @@ import ru.yadoma_realty.enums.UsersForTesting;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
@@ -101,8 +99,7 @@ public class AuthApiSteps {
     }
 
     @Step("Collect list auth cookies from loginResponse")
-    public static Map<Enum<AuthCookies>, String> collectAuthCookies(UsersForTesting usersForTesting) {
-        var loginResponse = AuthApiSteps.auth(usersForTesting);
+    public static Map<Enum<AuthCookies>, String> collectAuthCookies(LoginResponse loginResponse) {
         var resultMap = new HashMap<Enum<AuthCookies>, String>();
         resultMap.put(REFRESH_TOKEN, getRefreshToken(loginResponse));
         resultMap.put(SESSION_EXPIRES_AT, getSessionExpiresAtCookie(loginResponse));

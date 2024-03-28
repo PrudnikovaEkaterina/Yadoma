@@ -1,11 +1,14 @@
 package ru.yadoma_realty.api.steps.user_favorites_api_steps;
 
 import io.qameta.allure.Step;
+import ru.yadoma_realty.api.models.building_model.Building;
+import ru.yadoma_realty.api.models.building_model.BuildingData;
 import ru.yadoma_realty.utils.GenerationData;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -123,7 +126,7 @@ public class UserFavoritesApiSteps {
 //    }
 //
 
-//    @Step("Добавить пользователю ЖК в избранное")
+    //    @Step("Добавить пользователю ЖК в избранное")
 //    public static void addBuildingToUserFavoritesUsePhoneNumber(String phoneNumber) {
 //        String accessToken = AuthApiSteps.getAccessTokenUsePhoneNumber(phoneNumber);
 //        int buildingId = setRandomBuildingId();
@@ -136,7 +139,7 @@ public class UserFavoritesApiSteps {
 //                .then()
 //                .spec(responseSpec200);
 //    }
-    @Step("Добавить пользователю ЖК в избранное")
+    @Step("Add building to user favorites")
     public static void addBuildingToUserFavoritesUseAccessToken(String accessToken) {
         int buildingId = GenerationData.setRandomBuildingId();
         given()
@@ -144,8 +147,32 @@ public class UserFavoritesApiSteps {
                 .spec(requestSpec)
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
-                .post("api/me/favorites/buildings/"+buildingId)
+                .post("/api/me/favorites/buildings/" + buildingId)
                 .then()
                 .spec(responseSpec200);
+    }
+
+    @Step("Collect dates added buildings to favorites")
+    public static List<String> collectDatesAddedBuildingsToFavorites(String accessToken) {
+        return given()
+                .filter(withCustomTemplates())
+                .spec(requestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .param("favorites", 1)
+                .param("region_code", 77)
+                .param("region_code", 50)
+                .param("per_page", 15)
+                .param("page", 1)
+                .when()
+                .get("/api/buildings/favorites/")
+                .then()
+                .spec(responseSpec200)
+                .extract().as(BuildingData.class)
+                .data()
+                .stream()
+                .map(Building::markedAt)
+                .map(e -> e.substring(8, 10) +"."+ e.substring(5, 7)+"." + e.substring(0, 4))
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

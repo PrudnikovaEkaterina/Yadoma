@@ -1,4 +1,4 @@
-package ru.yadoma_realty.api.models.auth_models;
+package ru.yadoma_realty.api.models.auth_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

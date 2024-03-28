@@ -1,4 +1,4 @@
-package ru.yadoma_realty.api.models.auth_models;
+package ru.yadoma_realty.api.models.auth_model;
 
 public record LoginRequest(
         String password,

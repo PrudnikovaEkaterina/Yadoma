@@ -7,12 +7,9 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import ru.yadoma_realty.api.steps.auth_api_steps.AuthApiSteps;
-import ru.yadoma_realty.enums.AuthCookies;
-import ru.yadoma_realty.enums.UsersForTesting;
 import ru.yadoma_realty.web.pages.components.CallMeWidgetComponent;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -52,9 +49,8 @@ public class FavoritesPage {
     }
 
     @Step("Check the visibility of the Favorites header")
-    public FavoritesPage checkFavoritesHeaderTitle() {
+    public void checkFavoritesHeaderTitle() {
         FAVORITES_HEADER_TITLE.shouldBe(Condition.visible);
-        return this;
     }
 
     @Step("Check the visibility of the Your Personal Manager")
@@ -136,6 +132,7 @@ public class FavoritesPage {
                 .asFixedIterable()
                 .stream()
                 .map(e -> e.getText().replace(delete, ""))
+                .sorted()
                 .collect(toList());
     }
 

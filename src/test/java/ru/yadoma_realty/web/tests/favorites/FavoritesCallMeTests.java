@@ -24,7 +24,8 @@ public class FavoritesCallMeTests extends TestBase {
     @BeforeEach
     void beforeEach() {
         user = setUsersForTesting();
-        var cookiesMap = AuthApiSteps.collectAuthCookies(user);
+        var loginResponse = AuthApiSteps.auth(user);
+        var cookiesMap = AuthApiSteps.collectAuthCookies(loginResponse);
         UserFavoritesApiSteps.addBuildingToUserFavoritesUseAccessToken(cookiesMap.get(ACCESS_TOKEN));
         favoritesPage
                 .openFavoritesPageWithAPIAuth(cookiesMap.get(REFRESH_TOKEN), cookiesMap.get(SESSION_EXPIRES_AT), cookiesMap.get(REFERRAL_CODE))
